@@ -1,9 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:scan_inv/pages/mobile_scan.dart';
 import 'package:scan_inv/pages/widgets/scanner.dart';
 import 'package:scan_inv/pages/widgets/generate_code.dart';
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
+  static bool showScanner = false;
   const MyHomePage({Key? key}) : super(key: key);
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  void setShowScanner(bool v) => setState(() => showScanner = v);
+
+  bool showScanner = false;
 
   @override
   Widget build(BuildContext context) {
@@ -16,13 +27,19 @@ class MyHomePage extends StatelessWidget {
           style: TextStyle(color: Colors.white),
         ),
       ),
-      body: const SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
+      body: SafeArea(
+        child: Stack(
+          alignment: Alignment.center,
+          clipBehavior: Clip.none,
           children: [
-            MyGenerator(),
-            MyScanner(),
+            ListView(
+              padding: const EdgeInsets.all(10.0),
+              children: [
+                MyGenerator(),
+                MyScanner(onOpenScanner: setShowScanner),
+              ],
+            ),
+            if (showScanner) MyMobileScan(onCloseScanner: setShowScanner),
           ],
         ),
       ),
