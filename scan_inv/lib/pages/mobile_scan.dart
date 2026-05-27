@@ -17,15 +17,43 @@ class _MyMobileScanState extends State<MyMobileScan> {
     return Stack(
       fit: StackFit.expand,
       children: [
-        Container(
-          width: 500,
-          height: 500,
+        Card(
           color: Colors.black54,
-          child: const Center(
-            child: Text(
-              'Scanner Placeholder',
-              style: TextStyle(color: Colors.white, fontSize: 24),
-            ),
+          child: Column(
+            children: [
+              Expanded(
+                flex: 4,
+                child: /*MobileScanner(
+                  onDetect: (capture) {
+                    final Barcode barcodes = capture.barcodes.first;
+                    setState(() {
+                      barCode = barcodes.rawValue ?? '---';
+                    });
+                  },
+                ),*/
+                    const Center(
+                  child: Text(
+                    'Scanner Placeholder',
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Container(
+                  color: Colors.indigoAccent,
+                  alignment: Alignment.center,
+                  child: Text(
+                    barCode,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
         Positioned(
