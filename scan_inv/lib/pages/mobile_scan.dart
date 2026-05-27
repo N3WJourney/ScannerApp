@@ -1,8 +1,9 @@
-/*import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 class MyMobileScan extends StatefulWidget {
-  const MyMobileScan({Key? key}) : super(key: key);
+  final ValueChanged<bool>? onCloseScanner;
+  const MyMobileScan({Key? key, this.onCloseScanner}) : super(key: key);
 
   @override
   State<MyMobileScan> createState() => _MyMobileScanState();
@@ -13,42 +14,30 @@ class _MyMobileScanState extends State<MyMobileScan> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Barcode Scanner'),
-      ),
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              flex: 4,
-              child: MobileScanner(
-                onDetect: (result) {
-                  if (result.barcodes.isNotEmpty &&
-                      result.barcodes.first.rawValue != null) {
-                    setState(() {
-                      barCode = result.barcodes.first.rawValue!;
-                    });
-                  }
-                },
-                onDetectError: (error, _) {
-                  setState(() {
-                    barCode = 'Error scanning: $error';
-                  });
-                },
-              ),
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        Container(
+          width: 500,
+          height: 500,
+          color: Colors.black54,
+          child: const Center(
+            child: Text(
+              'Scanner Placeholder',
+              style: TextStyle(color: Colors.white, fontSize: 24),
             ),
-            Expanded(
-              flex: 1,
-              child: Text(
-                'Scan Result: $barCode',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ],
+          ),
         ),
-      ),
+        Positioned(
+          right: 12,
+          child: IconButton(
+            icon: const Icon(Icons.close, color: Colors.white),
+            onPressed: () {
+              widget.onCloseScanner?.call(false);
+            },
+          ),
+        ),
+      ],
     );
   }
-}*/
+}
