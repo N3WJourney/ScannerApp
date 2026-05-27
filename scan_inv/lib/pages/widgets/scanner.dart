@@ -5,15 +5,15 @@ class MyScanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: ElevatedButton(
-            onPressed: () {},
-            child: const Text('Scan'),
-          ),
+    return Container(
+      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+      width: double.infinity,
+      child: SizedBox(
+        child: ElevatedButton(
+          onPressed: () {},
+          child: const Text('Scan'),
         ),
-      ],
+      ),
     );
   }
 }

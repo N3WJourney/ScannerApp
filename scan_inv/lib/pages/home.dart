@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scan_inv/pages/widgets/scanner.dart';
-import 'package:scan_inv/pages/widgets/generatecode.dart';
+import 'package:scan_inv/pages/widgets/generate_code.dart';
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -9,12 +9,18 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("InvApp"),
+        foregroundColor: Colors.indigo,
+        backgroundColor: const Color.fromARGB(193, 70, 90, 206),
+        title: const Text(
+          'InvApp',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
-      body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(16.0),
-          children: const [
+      body: const SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
             MyGenerator(),
             MyScanner(),
           ],
@@ -23,7 +29,7 @@ class MyHomePage extends StatelessWidget {
       bottomNavigationBar: BottomAppBar(
         child: Container(
           height: 50.0,
-          color: Colors.indigo,
+          color: const Color.fromARGB(193, 70, 90, 206),
           child: const Center(
             child: Text(
               '© 2026 Inventory Scanner App (InvApp)',
