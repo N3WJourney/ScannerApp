@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:flutter/services.dart';
 
 class MyMobileScan extends StatefulWidget {
   final ValueChanged<bool>? onCloseScanner;
@@ -11,6 +12,13 @@ class MyMobileScan extends StatefulWidget {
 
 class _MyMobileScanState extends State<MyMobileScan> {
   String barCode = 'Please scan the code...';
+  void CopyToClipboard(String text) {
+    Clipboard.setData(ClipboardData(text: text)).then((_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Code copied to clipboard')),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,19 +31,13 @@ class _MyMobileScanState extends State<MyMobileScan> {
             children: [
               Expanded(
                 flex: 4,
-                child: /*MobileScanner(
+                child: MobileScanner(
                   onDetect: (capture) {
                     final Barcode barcodes = capture.barcodes.first;
                     setState(() {
                       barCode = barcodes.rawValue ?? '---';
                     });
                   },
-                ),*/
-                    const Center(
-                  child: Text(
-                    'Scanner Placeholder',
-                    style: TextStyle(color: Colors.white, fontSize: 18),
-                  ),
                 ),
               ),
               Expanded(
@@ -43,13 +45,23 @@ class _MyMobileScanState extends State<MyMobileScan> {
                 child: Container(
                   color: Colors.indigoAccent,
                   alignment: Alignment.center,
-                  child: Text(
-                    barCode,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    spacing: 10,
+                    children: [
+                      Text(
+                        barCode,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.copy, color: Colors.white),
+                        onPressed: () => CopyToClipboard(barCode),
+                      ),
+                    ],
                   ),
                 ),
               ),
