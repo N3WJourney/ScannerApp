@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scan_inv/pages/inventory_list.dart';
 import 'pages/home.dart';
 
 void main() {
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           //primarySwatch: Colors.grey,
           ),
-      home: const MyHomePage(),
+      home: const MyInventoryListPage(),
     );
   }
 }
