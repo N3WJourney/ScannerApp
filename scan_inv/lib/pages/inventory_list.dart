@@ -14,7 +14,17 @@ class _MyInventoryListPageState extends State<MyInventoryListPage> {
       appBar: AppBar(
         foregroundColor: Colors.indigo,
         backgroundColor: const Color.fromARGB(193, 70, 90, 206),
-        title: const Text('Inventory'),
+        title: const Text(
+          'Inventory',
+          style: TextStyle(color: Colors.white),
+        ),
+        actions: [
+          BackButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
       ),
       body: ListView(
         children: [

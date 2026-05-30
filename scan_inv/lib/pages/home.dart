@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scan_inv/pages/inventory_list.dart';
 import 'package:scan_inv/pages/mobile_scan.dart';
 import 'package:scan_inv/pages/widgets/scanner.dart';
 import 'package:scan_inv/pages/widgets/generate_code.dart';
@@ -26,6 +27,21 @@ class _MyHomePageState extends State<MyHomePage> {
           'InvApp',
           style: TextStyle(color: Colors.white),
         ),
+        leading: PopupMenuButton(
+          icon: const Icon(Icons.menu, color: Colors.white),
+          itemBuilder: (context) => [
+            PopupMenuItem(
+              child: const Text('Inventory List'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const MyInventoryListPage()),
+                );
+              },
+            ),
+          ],
+        ),
       ),
       body: SafeArea(
         child: Stack(
@@ -43,14 +59,23 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: const Color.fromARGB(193, 70, 90, 206),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(50.0),
+        ),
+        child: const Icon(Icons.add, color: Colors.white),
+      ),
       bottomNavigationBar: BottomAppBar(
-        child: Container(
+        color: const Color.fromARGB(193, 70, 90, 206),
+        child: SizedBox(
           height: 50.0,
-          color: const Color.fromARGB(193, 70, 90, 206),
           child: const Center(
             child: Text(
               '© 2026 Inventory Scanner App (InvApp)',
-              style: TextStyle(color: Colors.white),
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             ),
           ),
         ),
