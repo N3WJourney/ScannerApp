@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:scan_inv/pages/widgets/file_import.dart';
 import 'package:flutter/material.dart';
 import 'package:scan_inv/pages/inventory_list.dart';
 import 'package:scan_inv/pages/mobile_scan.dart';
@@ -14,8 +16,9 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   void setShowScanner(bool v) => setState(() => showScanner = v);
-
+  void setImportedFile(File? file) => setState(() => importedFile = file);
   bool showScanner = false;
+  File? importedFile;
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +43,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 );
               },
             ),
+            PopupMenuItem(
+              child: const Text('Clear Inventory'),
+              onTap: () {
+                setImportedFile(null);
+              },
+            ),
           ],
         ),
       ),
@@ -53,6 +62,12 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 MyGenerator(),
                 MyScanner(onOpenScanner: setShowScanner),
+                if (importedFile != null)
+                  Text(
+                    'Imported file: ${importedFile!.path}',
+                    style: TextStyle(
+                        color: Colors.indigo, fontWeight: FontWeight.bold),
+                  ),
               ],
             ),
             if (showScanner) MyMobileScan(onCloseScanner: setShowScanner),
@@ -60,7 +75,13 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          pickFileImport().then((file) {
+            if (file != null) {
+              setImportedFile(file);
+            }
+          });
+        },
         backgroundColor: const Color.fromARGB(193, 70, 90, 206),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(50.0),
