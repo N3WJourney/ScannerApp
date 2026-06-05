@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:scan_inv/pages/widgets/file_import.dart';
 import 'package:flutter/material.dart';
 import 'package:scan_inv/pages/inventory_list.dart';
@@ -16,9 +16,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   void setShowScanner(bool v) => setState(() => showScanner = v);
-  void setImportedFile(File? file) => setState(() => importedFile = file);
+  void setImportedFile(PlatformFile? file) =>
+      setState(() => importedFile = file);
   bool showScanner = false;
-  File? importedFile;
+  PlatformFile? importedFile;
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 MyScanner(onOpenScanner: setShowScanner),
                 if (importedFile != null)
                   Text(
-                    'Imported file: ${importedFile!.path}',
+                    'File: ${importedFile!.name}',
                     style: TextStyle(
                         color: Colors.indigo, fontWeight: FontWeight.bold),
                   ),
