@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 
 class MyMobileScan extends StatefulWidget {
   final ValueChanged<bool>? onCloseScanner;
-  const MyMobileScan({Key? key, this.onCloseScanner}) : super(key: key);
+  const MyMobileScan({super.key, this.onCloseScanner});
 
   @override
   State<MyMobileScan> createState() => _MyMobileScanState();

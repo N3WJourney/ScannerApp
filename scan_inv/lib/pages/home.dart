@@ -8,7 +8,7 @@ import 'package:scan_inv/pages/widgets/generate_code.dart';
 
 class MyHomePage extends StatefulWidget {
   static bool showScanner = false;
-  const MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();

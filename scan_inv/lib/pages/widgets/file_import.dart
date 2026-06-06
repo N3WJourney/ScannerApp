@@ -8,9 +8,9 @@ import 'package:excel/excel.dart';
 Future<PlatformFile?> pickFileImport() async {
   try {
     FilePickerResult? result = await FilePicker.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['csv', 'xlsx'],
-    );
+        //type: FileType.custom,
+        //allowedExtensions: ['csv', 'xlsx'],
+        );
     if (result != null) {
       return result.files.first;
     }
@@ -33,7 +33,7 @@ void openCSV(PlatformFile file) {
   final fields = csv.decode(csvString);
   //final fields = const Csv().convert(inputList);
   for (var row in fields) {
-    print(row);
+    //print(row);
   }
 }
 
@@ -42,13 +42,13 @@ void openExcel(PlatformFile file) {
   var excel = Excel.decodeBytes(input!);
   //var headings = List<Data>;
   for (var table in excel.tables.keys) {
-    print(table); //sheet Name
-    print(excel.tables[table]!.maxColumns);
-    print(excel.tables[table]!.maxRows);
+    //print(table); //sheet Name
+    //print(excel.tables[table]!.maxColumns);
+    //print(excel.tables[table]!.maxRows);
     var rows = excel.tables[table]!.rows;
     //headings.add(rows.first);
     for (var row in rows) {
-      print("$row");
+      //print("$row");
     }
   }
   // Process the Excel data as needed
