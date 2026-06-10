@@ -4,13 +4,14 @@ import 'dart:convert';
 import 'package:file_picker/file_picker.dart';
 import 'package:csv/csv.dart';
 import 'package:excel/excel.dart';
+import 'dart:collection';
 
 Future<PlatformFile?> pickFileImport() async {
   try {
     FilePickerResult? result = await FilePicker.pickFiles(
-        //type: FileType.custom,
-        //allowedExtensions: ['csv', 'xlsx'],
-        );
+      type: FileType.custom,
+      allowedExtensions: ['csv', 'xlsx'],
+    );
     if (result != null) {
       return result.files.first;
     }
@@ -33,6 +34,17 @@ void openCSV(PlatformFile file) {
   final fields = csv.decode(csvString);
   //final fields = const Csv().convert(inputList);
   for (var row in fields) {
+    if (fields.first == row) {
+      var headingMap = createHeadingMap(row);
+      continue;
+    } else {
+      var item = <dynamic>[];
+      item.add(false);
+      for (var cell in row) {
+        item.add(cell);
+      }
+      // Process the CSV data as needed
+    }
     //print(row);
   }
 }
@@ -40,16 +52,27 @@ void openCSV(PlatformFile file) {
 void openExcel(PlatformFile file) {
   final input = file.bytes;
   var excel = Excel.decodeBytes(input!);
-  //var headings = List<Data>;
-  for (var table in excel.tables.keys) {
-    //print(table); //sheet Name
-    //print(excel.tables[table]!.maxColumns);
-    //print(excel.tables[table]!.maxRows);
-    var rows = excel.tables[table]!.rows;
-    //headings.add(rows.first);
-    for (var row in rows) {
-      //print("$row");
+  var items = [<dynamic>[]];
+  for (var row in excel.tables[excel.tables.keys.first]!.rows) {
+    if (excel.tables[excel.tables.keys.first]!.rows.first == row) {
+      var headingMap = createHeadingMap(row);
+      continue;
+    } else {
+      var item = <dynamic>[];
+      item.add(false);
+      for (var cell in row) {
+        item.add(cell!.value);
+      }
+      items.add(item);
     }
   }
   // Process the Excel data as needed
+}
+
+HashMap<String, int> createHeadingMap(List<dynamic> headings) {
+  HashMap<String, int> headingMap = HashMap();
+  for (var i = 1; i < headings.length; i++) {
+    headingMap[headings[i]!.value.toString()] = i;
+  }
+  return headingMap;
 }

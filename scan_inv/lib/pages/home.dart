@@ -64,10 +64,23 @@ class _MyHomePageState extends State<MyHomePage> {
                 MyGenerator(),
                 MyScanner(onOpenScanner: setShowScanner),
                 if (importedFile != null)
-                  Text(
-                    'File: ${importedFile!.name}',
-                    style: TextStyle(
-                        color: Colors.indigo, fontWeight: FontWeight.bold),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        onPressed: () => setImportedFile(importedFile),
+                        icon: const Icon(Icons.save, color: Colors.green),
+                      ),
+                      Text(
+                        'File: ${importedFile!.name}',
+                        style: TextStyle(
+                            color: Colors.indigo, fontWeight: FontWeight.bold),
+                      ),
+                      IconButton(
+                        onPressed: () => setImportedFile(null),
+                        icon: const Icon(Icons.clear, color: Colors.red),
+                      ),
+                    ],
                   ),
               ],
             ),
