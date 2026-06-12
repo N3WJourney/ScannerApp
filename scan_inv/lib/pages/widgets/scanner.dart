@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class MyScanner extends StatefulWidget {
   final ValueChanged<bool>? onOpenScanner;
-  const MyScanner({Key? key, this.onOpenScanner}) : super(key: key);
+  const MyScanner({super.key, this.onOpenScanner});
 
   @override
   State<MyScanner> createState() => _MyScannerState();

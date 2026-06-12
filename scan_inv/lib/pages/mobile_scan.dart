@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 
 class MyMobileScan extends StatefulWidget {
   final ValueChanged<bool>? onCloseScanner;
-  const MyMobileScan({Key? key, this.onCloseScanner}) : super(key: key);
+  const MyMobileScan({super.key, this.onCloseScanner});
 
   @override
   State<MyMobileScan> createState() => _MyMobileScanState();
@@ -12,8 +12,9 @@ class MyMobileScan extends StatefulWidget {
 
 class _MyMobileScanState extends State<MyMobileScan> {
   String barCode = 'Please scan the code...';
-  void CopyToClipboard(String text) {
+  void copyToClipboard(String text) {
     Clipboard.setData(ClipboardData(text: text)).then((_) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Code copied to clipboard')),
       );
@@ -59,7 +60,7 @@ class _MyMobileScanState extends State<MyMobileScan> {
                       ),
                       IconButton(
                         icon: const Icon(Icons.copy, color: Colors.white),
-                        onPressed: () => CopyToClipboard(barCode),
+                        onPressed: () => copyToClipboard(barCode),
                       ),
                     ],
                   ),

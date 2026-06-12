@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scan_inv/services/generator_services.dart';
 
 class MyGenerator extends StatefulWidget {
-  const MyGenerator({Key? key}) : super(key: key);
+  const MyGenerator({super.key});
 
   @override
   State<MyGenerator> createState() => _MyGeneratorState();

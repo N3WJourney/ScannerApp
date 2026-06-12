@@ -1,3 +1,5 @@
+import 'package:file_picker/file_picker.dart';
+import 'package:scan_inv/pages/widgets/file_import.dart';
 import 'package:flutter/material.dart';
 import 'package:scan_inv/pages/inventory_list.dart';
 import 'package:scan_inv/pages/mobile_scan.dart';
@@ -6,7 +8,7 @@ import 'package:scan_inv/pages/widgets/generate_code.dart';
 
 class MyHomePage extends StatefulWidget {
   static bool showScanner = false;
-  const MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -14,8 +16,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   void setShowScanner(bool v) => setState(() => showScanner = v);
-
+  void setImportedFile(PlatformFile? file) =>
+      setState(() => importedFile = file);
   bool showScanner = false;
+  PlatformFile? importedFile;
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +44,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 );
               },
             ),
+            PopupMenuItem(
+              child: const Text('Clear Inventory'),
+              onTap: () {
+                setImportedFile(null);
+              },
+            ),
           ],
         ),
       ),
@@ -53,6 +63,25 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 MyGenerator(),
                 MyScanner(onOpenScanner: setShowScanner),
+                if (importedFile != null)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        onPressed: () => setImportedFile(importedFile),
+                        icon: const Icon(Icons.save, color: Colors.green),
+                      ),
+                      Text(
+                        'File: ${importedFile!.name}',
+                        style: TextStyle(
+                            color: Colors.indigo, fontWeight: FontWeight.bold),
+                      ),
+                      IconButton(
+                        onPressed: () => setImportedFile(null),
+                        icon: const Icon(Icons.clear, color: Colors.red),
+                      ),
+                    ],
+                  ),
               ],
             ),
             if (showScanner) MyMobileScan(onCloseScanner: setShowScanner),
@@ -60,7 +89,13 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          pickFileImport().then((file) {
+            if (file != null) {
+              setImportedFile(file);
+            }
+          });
+        },
         backgroundColor: const Color.fromARGB(193, 70, 90, 206),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(50.0),
