@@ -6,6 +6,7 @@ import 'package:csv/csv.dart';
 import 'package:excel/excel.dart';
 import 'dart:collection';
 
+//may require a class to encapsolate these functions
 Future<PlatformFile?> pickFileImport() async {
   try {
     FilePickerResult? result = await FilePicker.pickFiles(
