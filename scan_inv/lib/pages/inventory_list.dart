@@ -18,13 +18,13 @@ class _MyInventoryListPageState extends State<MyInventoryListPage> {
           'Inventory',
           style: TextStyle(color: Colors.white),
         ),
-        actions: [
+        /*actions: [
           BackButton(
             onPressed: () {
               Navigator.pop(context);
             },
           ),
-        ],
+        ],*/
       ),
       body: ListView(
         children: [
