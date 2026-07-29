@@ -1,13 +1,21 @@
+import 'package:excel/excel.dart';
+import 'package:path/path.dart';
+
 class InventoryModel {
-  int ID;
-  String name;
-  String description1;
-  String description2;
-  String description3;
-  Object? extraDetails;
-  bool isChecked;
+  static const String columnCheck = 'checked';
+  static const String columnID = '_id';
+  static List<String> columnNames = [];
 
-  //Map model to database
+  String getTableDesign() {
+    String tableHeadings = join(columnID, ' INTEGER PRIMARY KEY AUTOINCREMENT,',
+        columnCheck, ' INTEGER,');
+    for (var heading in columnNames) {
+      tableHeadings += ' $heading TEXT NULLABLE,';
+    }
+    return tableHeadings;
+  }
 
-  //Map database to model
+  void setColumnNames(List<String> headings) {
+    columnNames = headings;
+  }
 }

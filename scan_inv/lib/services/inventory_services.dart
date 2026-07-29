@@ -1,31 +1,44 @@
 import 'package:sqflite/sqflite.dart';
+import 'package:scan_inv/services/model/inventory_model.dart';
 
 class InventoryServices {
-  String columnID = 'id';
-  String columnName = 'name';
-  String? column1;
-  String? column2;
-  String? column3;
-  String? column4;
-  Database db;
+  bool isChecked;
+  int id;
+  Object item;
 
-  Future openDatabase() async {
-    var databasePath = await getDatabasesPath();
-    String path = join(databasePath, 'inventory.db');
-    db = await openDatabase(
-      'inventory.db',
-      version: 1,
-      onCreate: (Database db, int version) async {
-        await db.execute('''
-          CREATE TABLE inventory (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT,
-            quantity INTEGER
-          )
-        ''');
-      },
-    );
-  } // open Database
+  Future<void> setItems(bool isChecked, int id, List<String> info) async {
+    this.isChecked = isChecked;
+    this.id = id;
+    item = await buildItem(info);
+  } // set Items
+
+  Future<Object> buildItem(List<String> info) async {
+    var content = {};
+    for (var i = 0; i < info.length; i++) {
+      content[InventoryModel.columnNames[i]] = info[i];
+    }
+    return content;
+  } // Map to Model
+
+  Map<String, Object?> toMap() {
+    var map = <String, Object?>{
+      InventoryModel.columnID: id,
+      InventoryModel.columnCheck: isChecked == false ? 0 : 1,
+      ...item as Map<String, Object?>
+    };
+    return map;
+  }
+
+  InventoryServices.fromMap(Map<String, dynamic> map) {
+    isChecked = map[InventoryModel.columnCheck] == 1;
+    id = map[InventoryModel.columnID] as int;
+    var content = {};
+    for (var column in InventoryModel.columnNames) {
+      content[column] = map[column];
+    }
+    item = content;
+  }
+  //Map invertory service to model
 
   //set and get Columns
 
