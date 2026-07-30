@@ -4,10 +4,11 @@ import 'package:scan_inv/services/model/inventory_model.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseServices {
-  //DatabaseServices._init();
-  //static final DatabaseServices instance = DatabaseServices._init();
-
+  static final tableName = 'inventory';
+  static final DatabaseServices instance = DatabaseServices._init();
   static Database? _database;
+  DatabaseServices._init();
+
   Future<Database?> get database async {
     if (_database != null) return _database!;
     _database = await _intializeDB();
@@ -21,9 +22,10 @@ class DatabaseServices {
   } // open Database
 
   Future<void> createTable() async {
+    var db = await instance.database;
     final tableHeadings = InventoryModel().getTableDesign();
-    await _database!.execute('''
-      CREATE TABLE inventory (
+    await db!.execute('''
+      CREATE TABLE $tableName (
         $tableHeadings
       )
     ''');
@@ -37,9 +39,18 @@ class DatabaseServices {
   } // close Database
 
   Future<void> insertItems(List<InventoryServices> items) async {
-    for (var item in items) {
-      await _database!.insert('inventory', item.toMap());
+    if (items.isEmpty) {
+      return;
     }
+    var db = await instance.database;
+    await db!.transaction((txn) async {
+      final batch = txn.batch();
+      for (var item in items) {
+        batch.insert(tableName, item.toMap(),
+            conflictAlgorithm: ConflictAlgorithm.replace);
+      }
+      await batch.commit(noResult: true);
+    });
   } // insert Database
 
   Future<InventoryServices?> getItem(int id) async {

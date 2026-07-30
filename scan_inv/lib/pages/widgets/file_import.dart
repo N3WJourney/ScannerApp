@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:csv/csv.dart';
 import 'package:excel/excel.dart';
 import 'package:scan_inv/services/database_services.dart';
+import 'package:scan_inv/services/inventory_services.dart';
 import 'dart:collection';
 
 import 'package:scan_inv/services/model/inventory_model.dart';
@@ -39,38 +40,43 @@ class FileImport {
     final csvString = utf8.decode(file.bytes!);
     final fields = csv.decode(csvString);
     //final fields = const Csv().convert(inputList);
+    var items = <InventoryServices>[];
     for (var row in fields) {
       if (fields.first == row) {
         createHeadingMap(row);
-        continue;
       } else {
-        var item = <dynamic>[];
-        item.add(false);
-        for (var cell in row) {
-          item.add(cell);
+        var item = InventoryServices();
+        await item.setItem(false, row);
+        items.add(item);
+        if (items.length >= 500) {
+          await DatabaseServices().insertItems(items);
+          items.clear();
         }
-        // Process the CSV data as needed
       }
-      //print(row);
+      await DatabaseServices().insertItems(items);
+      items.clear();
     }
   }
 
   Future<void> openExcel(PlatformFile file) async {
     final input = file.bytes;
     var excel = Excel.decodeBytes(input!);
-    var items = [<dynamic>[]];
+    var items = <InventoryServices>[];
     for (var row in excel.tables[excel.tables.keys.first]!.rows) {
       if (excel.tables[excel.tables.keys.first]!.rows.first == row) {
         createHeadingMap(row);
         continue;
       } else {
-        var item = <dynamic>[];
-        item.add(false);
-        for (var cell in row) {
-          item.add(cell!.value);
-        }
+        var item = InventoryServices();
+        await item.setItem(false, row);
         items.add(item);
+        if (items.length >= 500) {
+          await DatabaseServices().insertItems(items);
+          items.clear();
+        }
       }
+      await DatabaseServices().insertItems(items);
+      items.clear();
     }
     // Process the Excel data as needed
   }

@@ -2,17 +2,18 @@ import 'package:sqflite/sqflite.dart';
 import 'package:scan_inv/services/model/inventory_model.dart';
 
 class InventoryServices {
-  bool isChecked;
-  int id;
-  Object item;
+  bool? isChecked;
+  int? id;
+  Object? item;
 
-  Future<void> setItems(bool isChecked, int id, List<String> info) async {
+  InventoryServices();
+
+  Future<void> setItem(bool isChecked, List<dynamic> info) async {
     this.isChecked = isChecked;
-    this.id = id;
     item = await buildItem(info);
   } // set Items
 
-  Future<Object> buildItem(List<String> info) async {
+  Future<Object> buildItem(List<dynamic> info) async {
     var content = {};
     for (var i = 0; i < info.length; i++) {
       content[InventoryModel.columnNames[i]] = info[i];
@@ -22,7 +23,6 @@ class InventoryServices {
 
   Map<String, Object?> toMap() {
     var map = <String, Object?>{
-      InventoryModel.columnID: id,
       InventoryModel.columnCheck: isChecked == false ? 0 : 1,
       ...item as Map<String, Object?>
     };
