@@ -8,13 +8,14 @@ class MyGenerator extends StatefulWidget {
   State<MyGenerator> createState() => _MyGeneratorState();
 }
 
-class _MyGeneratorState extends State<MyGenerator> {
+class _MyGeneratorState extends State<MyGenerator>
+    with BarcodeGeneratorService {
   late String codeText;
   late bool typeCode;
   String cardCode = "";
   bool isQRcode = true;
 
-  void _generateCode() {
+  void setCode() {
     setState(() {
       cardCode = codeText;
     });
@@ -29,7 +30,7 @@ class _MyGeneratorState extends State<MyGenerator> {
           height: 280,
           child: Card(
             child: Center(
-              child: GeneratorServices.generateCode(
+              child: generateCode(
                 code: cardCode,
                 isQR: isQRcode,
               ),
@@ -50,7 +51,7 @@ class _MyGeneratorState extends State<MyGenerator> {
                 onChanged: (text) {
                   codeText = text;
                 },
-                onSubmitted: (_) => _generateCode(),
+                onSubmitted: (_) => setCode(),
               ),
             ),
             const SizedBox(width: 16),
@@ -73,7 +74,7 @@ class _MyGeneratorState extends State<MyGenerator> {
         ),
         const SizedBox(height: 16),
         ElevatedButton(
-          onPressed: _generateCode,
+          onPressed: setCode,
           child: const Text('Generate Code'),
         ),
       ],
